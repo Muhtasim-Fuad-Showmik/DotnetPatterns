@@ -18,6 +18,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Allow AutoMapper to automatically map between DTOs and DB entities
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Register repositories
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
