@@ -1,4 +1,13 @@
+using DotnetPatterns.DataService.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Get connection string
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Initialize the DB Context inside the Dependency Injection container
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllers();
