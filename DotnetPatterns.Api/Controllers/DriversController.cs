@@ -64,12 +64,10 @@ public class DriversController : BaseController
         if (!ModelState.IsValid)
             return BadRequest();
 
-        var result = _mapper.Map<Driver>(driver);
+        var command = new UpdateDriverInfoRequest(driver);
+        var result = await _mediator.Send(command);
 
-        await _unitOfWork.Drivers.Update(result);
-        await _unitOfWork.CompleteAsync();
-
-        return NoContent();
+        return result ? NoContent() : BadRequest();
     }
 
     [HttpDelete]
