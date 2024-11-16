@@ -24,6 +24,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Register repositories
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Injecting the MediatR to our dependency injection
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
