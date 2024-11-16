@@ -1,4 +1,5 @@
 using AutoMapper;
+using DotnetPatterns.Api.Commands;
 using DotnetPatterns.Api.Queries;
 using DotnetPatterns.DataService.Repositories.Interfaces;
 using DotnetPatterns.Entities.DbSet;
@@ -51,12 +52,10 @@ public class DriversController : BaseController
         if (!ModelState.IsValid)
             return BadRequest();
 
-        var result = _mapper.Map<Driver>(driver);
+        var command = new CreateDriverInfoRequest(driver);
+        var result = await _mediator.Send(command);
 
-        await _unitOfWork.Drivers.Add(result);
-        await _unitOfWork.CompleteAsync();
-
-        return CreatedAtAction(nameof(GetDriver), new {driverId = result.Id}, result);
+        return CreatedAtAction(nameof(GetDriver), new {driverId = result.DriverId}, result);
     }
     
     [HttpPut("")]
