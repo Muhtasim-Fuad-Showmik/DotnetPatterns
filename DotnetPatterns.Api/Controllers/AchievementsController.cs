@@ -3,6 +3,7 @@ using DotnetPatterns.DataService.Repositories.Interfaces;
 using DotnetPatterns.Entities.DbSet;
 using DotnetPatterns.Entities.Dtos.Requests;
 using DotnetPatterns.Entities.Dtos.Responses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetPatterns.Api.Controllers;
@@ -11,7 +12,8 @@ public class AchievementsController : BaseController
 {
     public AchievementsController(
         IUnitOfWork unitOfWork, 
-        IMapper mapper) : base(unitOfWork, mapper)
+        IMapper mapper,
+        IMediator mediator) : base(unitOfWork, mapper, mediator)
     {
     }
 

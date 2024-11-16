@@ -12,12 +12,9 @@ namespace DotnetPatterns.Api.Controllers;
 
 public class DriversController : BaseController
 {
-    private readonly IMediator _mediator;
-    
     public DriversController(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator) 
-        : base(unitOfWork, mapper)
+        : base(unitOfWork, mapper, mediator)
     {
-        _mediator = mediator;
     }
     
     [HttpGet]
