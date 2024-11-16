@@ -74,14 +74,9 @@ public class DriversController : BaseController
     [Route("{driverId:guid}")]
     public async Task<IActionResult> DeleteDriver(Guid driverId)
     {
-        var driver = await _unitOfWork.Drivers.GetById(driverId);
+        var command = new DeleteDriverInfoRequest(driverId);
+        var result = await _mediator.Send(command);
 
-        if (driver == null)
-            return NotFound();
-
-        await _unitOfWork.Drivers.Delete(driverId);
-        await _unitOfWork.CompleteAsync();
-
-        return NoContent();
+        return result ? NoContent() : BadRequest();
     }
 }
