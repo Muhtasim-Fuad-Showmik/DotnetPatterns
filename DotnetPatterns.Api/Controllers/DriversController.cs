@@ -23,12 +23,13 @@ public class DriversController : BaseController
     [Route("{driverId:guid}")]
     public async Task<IActionResult> GetDriver(Guid driverId)
     {
-        var driver = await _unitOfWork.Drivers.GetById(driverId);
+        // Specifying the query for this endpoint
+        var query = new GetDriverQuery(driverId);
 
-        if (driver == null)
+        var result = await _mediator.Send(query);
+
+        if (result == null)
             return NotFound();
-
-        var result = _mapper.Map<GetDriverResponse>(driver);
 
         return Ok(result);
     }
@@ -36,7 +37,7 @@ public class DriversController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetAllDrivers()
     {
-        // Specifying the query that I have for this endpoint
+        // Specifying the query for this endpoint
         var query = new GetAllDriversQuery();
 
         var result = await _mediator.Send(query);
