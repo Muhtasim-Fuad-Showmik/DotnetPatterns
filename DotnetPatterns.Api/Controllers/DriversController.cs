@@ -1,16 +1,22 @@
 using AutoMapper;
+using DotnetPatterns.Api.Queries;
 using DotnetPatterns.DataService.Repositories.Interfaces;
 using DotnetPatterns.Entities.DbSet;
 using DotnetPatterns.Entities.Dtos.Requests;
 using DotnetPatterns.Entities.Dtos.Responses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotnetPatterns.Api.Controllers;
 
 public class DriversController : BaseController
 {
-    public DriversController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    private readonly IMediator _mediator;
+    
+    public DriversController(IUnitOfWork unitOfWork, IMapper mapper, IMediator mediator) 
+        : base(unitOfWork, mapper)
     {
+        _mediator = mediator;
     }
     
     [HttpGet]
@@ -30,9 +36,12 @@ public class DriversController : BaseController
     [HttpGet]
     public async Task<IActionResult> GetAllDrivers()
     {
-        var driver = await _unitOfWork.Drivers.All();
+        // Specifying the query that I have for this endpoint
+        var query = new GetAllDriversQuery();
 
-        return Ok(_mapper.Map<IEnumerable<GetDriverResponse>>(driver));
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
     }
 
     [HttpPost("")]
